@@ -1,191 +1,288 @@
 """
-Evaluation Script
-------------------
-The ONLY file in this repo that reads evaluation_labels.json.
-Joins the scorer's independent predictions to ground truth by dispute_id
-and reports honest metrics: accuracy, precision/recall on the
-"defendable" call, and evidence-gap detection precision/recall,
-broken down by bucket.
+LLM Explanation Layer
+---------------------
+Takes ONLY the deterministic scorer output and converts it into
+a plain-language explanation + recommended next step.
+
+IMPORTANT:
+- The LLM does NOT decide defendability.
+- The deterministic scorer already decided the score.
+- The LLM only explains that decision.
+- Ground truth is NEVER passed to the LLM.
+
+Uses Google Gemini through the google-genai SDK.
+Falls back to a deterministic template if:
+- GEMINI_API_KEY is missing
+- google-genai is not installed
+- API call fails
 """
 
 import json
+import os
 from pathlib import Path
-from collections import defaultdict
 
 BASE = Path(__file__).parent.parent
 
 
-def load_scorer_output():
-    with open(BASE / "eval" / "scorer_output.json", encoding="utf-8") as f:
-        return {r["dispute_id"]: r for r in json.load(f)}
+READABLE_FIELD_NAMES = {
+    "has_shipping_confirmation": "shipping confirmation",
+    "has_tracking_number": "tracking number",
+    "has_delivery_proof": "proof of delivery",
+    "has_invoice_match": "invoice/amount match",
+    "has_customer_communication": "customer communication log",
+    "has_auth_otp_log": "authentication/OTP log",
+    "has_cancellation_record": "cancellation record",
+}
 
 
-def load_labels():
-    with open(BASE / "data" / "evaluation_labels.json", encoding="utf-8") as f:
-        return {l["dispute_id"]: l for l in json.load(f)}
+def humanize(field):
+    return READABLE_FIELD_NAMES.get(field, field)
 
 
-def evaluate():
-    scored = load_scorer_output()
-    labels = load_labels()
+def build_prompt(scored_dispute, reason_map):
+    """
+    Build the prompt using ONLY scorer output + reason-code requirements.
 
-    assert set(scored) == set(labels), "Mismatch between scored disputes and labels"
+    Ground truth is intentionally not available here.
+    """
 
-    tp = fp = tn = fn = 0
-    by_bucket = defaultdict(lambda: {"tp": 0, "fp": 0, "tn": 0, "fn": 0, "total": 0})
+    reason_code = scored_dispute["reason_code"]
+    rules = reason_map[reason_code]
 
-    evidence_tp = evidence_fp = evidence_fn = 0
+    required = [
+        humanize(field)
+        for field in rules["required_evidence"]
+    ]
 
-    mismatches = []
+    missing_critical = [
+        humanize(field)
+        for field in scored_dispute["missing_critical_evidence"]
+    ]
 
-    for did, label in labels.items():
-        pred = scored[did]["predicted_defendable"]
-        actual = label["ground_truth_defendable"]
-        bucket = label["bucket"]
-        by_bucket[bucket]["total"] += 1
+    missing_supporting = [
+        humanize(field)
+        for field in scored_dispute["missing_supporting_evidence"]
+    ]
 
-        if pred and actual:
-            tp += 1
-            by_bucket[bucket]["tp"] += 1
-        elif pred and not actual:
-            fp += 1
-            by_bucket[bucket]["fp"] += 1
-            mismatches.append((did, bucket, "predicted DEFENDABLE, actually NOT — costly false positive"))
-        elif not pred and actual:
-            fn += 1
-            by_bucket[bucket]["fn"] += 1
-            mismatches.append((did, bucket, "predicted NOT defendable, actually WAS — missed a winnable case"))
-        else:
-            tn += 1
-            by_bucket[bucket]["tn"] += 1
+    found = [
+        humanize(field)
+        for field in rules["required_evidence"]
+        if field not in scored_dispute["missing_critical_evidence"]
+        and field not in scored_dispute["missing_supporting_evidence"]
+    ]
 
-        # Evidence-gap detection: per-field precision/recall, not per-dispute.
-        # A single dispute can contribute to BOTH fp and fn simultaneously
-        # (e.g. predicted missing {A,B}, truth missing {A,C}: A is correct,
-        # B is a false positive, C is a false negative — all in one dispute).
-        pred_missing = set(scored[did]["all_missing_evidence"])
-        true_missing = set(label["ground_truth_missing_evidence"])
-        evidence_tp += len(pred_missing & true_missing)
-        evidence_fp += len(pred_missing - true_missing)
-        evidence_fn += len(true_missing - pred_missing)
+    return f"""
+You are explaining a chargeback dispute defendability assessment
+to a merchant.
 
-    total = tp + fp + tn + fn
-    accuracy = (tp + tn) / total if total else 0
-    precision = tp / (tp + fp) if (tp + fp) else 0
-    recall = tp / (tp + fn) if (tp + fn) else 0
+A deterministic rules engine has ALREADY calculated the assessment.
 
-    print("=" * 60)
-    print("DEFENDABILITY CLASSIFICATION (predicted vs ground truth)")
-    print("=" * 60)
-    print(f"Total disputes evaluated: {total}")
-    print(f"Accuracy:  {accuracy:.1%}")
-    print(f"Precision: {precision:.1%}  (of cases we called defendable, how many really were)")
-    print(f"Recall:    {recall:.1%}  (of truly defendable cases, how many we caught)")
-    print(f"True Positives:  {tp}")
-    print(f"False Positives: {fp}  <- costly: told merchant to fight a losing case")
-    print(f"True Negatives:  {tn}")
-    print(f"False Negatives: {fn}  <- costly: told merchant not to fight a winnable case")
-    print()
-    print("BY BUCKET:")
-    for bucket, stats in by_bucket.items():
-        print(f"  {bucket:20s} total={stats['total']:3d}  "
-              f"tp={stats['tp']:3d} fp={stats['fp']:3d} "
-              f"tn={stats['tn']:3d} fn={stats['fn']:3d}")
-    print()
-    print("EVIDENCE-GAP DETECTION (per-field precision/recall, not per-dispute)")
-    evidence_precision = (
-        evidence_tp / (evidence_tp + evidence_fp) if evidence_tp + evidence_fp else 0
-    )
-    evidence_recall = (
-        evidence_tp / (evidence_tp + evidence_fn) if evidence_tp + evidence_fn else 0
-    )
-    evidence_f1 = (
-        2 * evidence_precision * evidence_recall / (evidence_precision + evidence_recall)
-        if evidence_precision + evidence_recall else 0
-    )
-    print(f"Precision: {evidence_precision:.1%}")
-    print(f"Recall:    {evidence_recall:.1%}")
-    print(f"F1:        {evidence_f1:.1%}")
-    print(f"(tp={evidence_tp}, fp={evidence_fp}, fn={evidence_fn} — field-level, not dispute-level)")
-    print()
-    if mismatches:
-        print(f"MISMATCHES ({len(mismatches)}) — for your 'what broke' section:")
-        for did, bucket, reason in mismatches[:20]:
-            print(f"  {did} [{bucket}]: {reason}")
-        if len(mismatches) > 20:
-            print(f"  ... and {len(mismatches) - 20} more")
-    print()
-    print("BY REASON CODE:")
-    by_reason = defaultdict(lambda: {
-        "total": 0, "tp": 0, "fp": 0, "tn": 0, "fn": 0
-    })
+You must NOT change, reinterpret, or second-guess the score.
 
-    for did, label in labels.items():
-        reason = label["reason_code"]
-        pred = scored[did]["predicted_defendable"]
-        actual = label["ground_truth_defendable"]
+Your job is ONLY to explain the result clearly and give a practical
+next step.
 
-        by_reason[reason]["total"] += 1
+Dispute reason:
+{reason_code}
 
-        if pred and actual:
-            by_reason[reason]["tp"] += 1
-        elif pred and not actual:
-            by_reason[reason]["fp"] += 1
-        elif not pred and actual:
-            by_reason[reason]["fn"] += 1
-        else:
-            by_reason[reason]["tn"] += 1
+Dispute amount:
+₹{scored_dispute["dispute_amount"]}
 
-    for reason, stats in sorted(by_reason.items()):
-        reason_total = stats["total"]
-        reason_accuracy = (
-            (stats["tp"] + stats["tn"]) / reason_total
-            if reason_total else 0
+Response deadline:
+{scored_dispute["response_deadline"]}
+
+Required evidence:
+{", ".join(required)}
+
+Evidence found:
+{", ".join(found) if found else "none"}
+
+Missing critical evidence:
+{", ".join(missing_critical) if missing_critical else "none"}
+
+Missing supporting evidence:
+{", ".join(missing_supporting) if missing_supporting else "none"}
+
+Defendability score:
+{scored_dispute["score"]}/100
+
+Score bucket:
+{scored_dispute["score_bucket"]}
+
+Write exactly 2-3 short sentences.
+
+Explain:
+1. What the score means.
+2. Which missing evidence matters most, if any.
+3. What the merchant should do next.
+
+Be direct, practical, and specific.
+Do not invent evidence.
+Do not invent facts.
+Do not change the score.
+"""
+
+
+def template_fallback(scored_dispute):
+    """
+    Deterministic fallback.
+    Works without Gemini.
+    """
+
+    bucket = scored_dispute["score_bucket"]
+    score = scored_dispute["score"]
+
+    critical = scored_dispute["missing_critical_evidence"]
+    supporting = scored_dispute["missing_supporting_evidence"]
+
+    strength_word = {
+        "HIGH": "strong",
+        "MEDIUM": "moderate",
+        "LOW": "weak",
+        "VERY LOW": "very weak",
+    }[bucket]
+
+    if bucket == "HIGH":
+        return (
+            f"Your case is strong ({score}/100). "
+            "All required evidence is present — submit your response "
+            "before the deadline."
         )
+
+    if critical:
+        names = ", ".join(
+            humanize(field)
+            for field in critical
+        )
+
+        return (
+            f"Your case is {strength_word} ({score}/100). "
+            f"You're missing {names}, which is critical evidence "
+            "for this dispute type. Retrieve it before deciding "
+            "whether to contest."
+        )
+
+    if supporting:
+        names = ", ".join(
+            humanize(field)
+            for field in supporting
+        )
+
+        return (
+            f"Your case is {strength_word} ({score}/100). "
+            f"The critical evidence is present, but you're missing "
+            f"{names}. Retrieve it before submitting to strengthen "
+            "your response."
+        )
+
+    return f"Your case has a score of {score}/100 ({bucket})."
+
+
+def explain_dispute(scored_dispute, reason_map, use_llm=True):
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+
+    # No API key → deterministic fallback
+    if not use_llm or not api_key:
+        return (
+            template_fallback(scored_dispute),
+            "template_fallback"
+        )
+
+    try:
+        from google import genai
+
+        client = genai.Client(
+            api_key=api_key
+        )
+
+        prompt = build_prompt(
+            scored_dispute,
+            reason_map
+        )
+
+        response = client.models.generate_content(
+            model="gemini-3.7-flash",
+            contents=prompt,
+        )
+
+        text = response.text.strip()
+
+        if not text:
+            raise RuntimeError(
+                "Gemini returned an empty response"
+            )
+
+        return text, "gemini"
+
+    except Exception as e:
+
+        # Never let the LLM failure break the pipeline.
+        return (
+            template_fallback(scored_dispute),
+            f"template_fallback (gemini_error: {e})"
+        )
+
+
+def load_reason_map():
+
+    with open(
+        BASE / "data" / "reason_code_evidence_map.json",
+        encoding="utf-8"
+    ) as f:
+        return json.load(f)
+
+
+def load_scorer_output():
+
+    with open(
+        BASE / "eval" / "scorer_output.json",
+        encoding="utf-8"
+    ) as f:
+        return json.load(f)
+
+
+def main():
+
+    reason_map = load_reason_map()
+    scored = load_scorer_output()
+
+    # Pick one case from each score bucket.
+    seen_buckets = set()
+    demo_cases = []
+
+    for case in scored:
+
+        bucket = case["score_bucket"]
+
+        if bucket not in seen_buckets:
+
+            demo_cases.append(case)
+            seen_buckets.add(bucket)
+
+        if len(demo_cases) >= 4:
+            break
+
+    for case in demo_cases:
+
+        explanation, source = explain_dispute(
+            case,
+            reason_map
+        )
+
+        print("=" * 60)
 
         print(
-            f"  {reason:28s} "
-            f"total={reason_total:3d} "
-            f"accuracy={reason_accuracy:6.1%} "
-            f"tp={stats['tp']:3d} "
-            f"fp={stats['fp']:3d} "
-            f"tn={stats['tn']:3d} "
-            f"fn={stats['fn']:3d}"
+            f"{case['dispute_id']} | "
+            f"{case['reason_code']} | "
+            f"score={case['score']} "
+            f"({case['score_bucket']}) | "
+            f"source={source}"
         )
-    print()
-    print("=" * 60)
-    print("SCORE DISTRIBUTION WITHIN EACH BUCKET (the real nuance)")
-    print("=" * 60)
-    print("Binary accuracy above hides this: within evidence_gap cases,")
-    print("losing a CRITICAL field vs a SUPPORTING field should produce")
-    print("very different scores even though both are 'not defendable'.")
-    print()
-    bucket_scores = defaultdict(list)
-    for did, label in labels.items():
-        bucket_scores[label["bucket"]].append(scored[did]["score"])
 
-    for bucket in ["clean_win", "evidence_gap", "unwinnable", "deadline_pressure"]:
-        scores = sorted(bucket_scores[bucket])
-        if not scores:
-            continue
-        dist = defaultdict(int)
-        for s in scores:
-            dist[scored_bucket_label(s)] += 1
-        print(f"  {bucket:20s} min={min(scores):3d} max={max(scores):3d} "
-              f"avg={sum(scores)/len(scores):5.1f}  "
-              f"dist={dict(dist)}")
-
-
-def scored_bucket_label(score):
-    if score >= 80:
-        return "HIGH"
-    elif score >= 50:
-        return "MEDIUM"
-    elif score >= 20:
-        return "LOW"
-    else:
-        return "VERY LOW"
+        print(explanation)
+        print()
 
 
 if __name__ == "__main__":
-    evaluate()
+    main()
