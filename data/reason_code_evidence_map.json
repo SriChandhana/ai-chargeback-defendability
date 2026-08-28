@@ -1,0 +1,51 @@
+{
+  "ITEM_NOT_RECEIVED": {
+    "meaning": "Customer says goods never arrived",
+    "required_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ],
+    "critical_evidence": [
+      "has_delivery_proof"
+    ]
+  },
+  "NOT_AS_DESCRIBED": {
+    "meaning": "Product/service didn't match listing",
+    "required_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ],
+    "critical_evidence": [
+      "has_customer_communication"
+    ]
+  },
+  "DUPLICATE_CHARGE": {
+    "meaning": "Customer billed twice",
+    "required_evidence": [
+      "has_invoice_match"
+    ],
+    "critical_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  "SUBSCRIPTION_NOT_CANCELLED": {
+    "meaning": "Customer says they cancelled but got charged",
+    "required_evidence": [
+      "has_cancellation_record",
+      "has_invoice_match"
+    ],
+    "critical_evidence": [
+      "has_cancellation_record"
+    ]
+  },
+  "UNAUTHORIZED": {
+    "meaning": "Customer claims they didn't make the purchase",
+    "required_evidence": [
+      "has_auth_otp_log"
+    ],
+    "critical_evidence": [
+      "has_auth_otp_log"
+    ]
+  }
+}

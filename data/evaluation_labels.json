@@ -1,0 +1,727 @@
+[
+  {
+    "dispute_id": "CB-0001",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0002",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0003",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0004",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0005",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0006",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0007",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0008",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0009",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0010",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0011",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0012",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0013",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0014",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0015",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0016",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0017",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0018",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0019",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0020",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0021",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0022",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0023",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0024",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0025",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0026",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0027",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0028",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0029",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0030",
+    "bucket": "clean_win",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0031",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0032",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0033",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0034",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number"
+    ]
+  },
+  {
+    "dispute_id": "CB-0035",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_cancellation_record"
+    ]
+  },
+  {
+    "dispute_id": "CB-0036",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0037",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0038",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0039",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0040",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_cancellation_record"
+    ]
+  },
+  {
+    "dispute_id": "CB-0041",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0042",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0043",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0044",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0045",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_delivery_proof",
+      "has_tracking_number"
+    ]
+  },
+  {
+    "dispute_id": "CB-0046",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_tracking_number"
+    ]
+  },
+  {
+    "dispute_id": "CB-0047",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0048",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0049",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0050",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0051",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_cancellation_record"
+    ]
+  },
+  {
+    "dispute_id": "CB-0052",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0053",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0054",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0055",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0056",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_customer_communication",
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0057",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0058",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0059",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0060",
+    "bucket": "evidence_gap",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_cancellation_record"
+    ]
+  },
+  {
+    "dispute_id": "CB-0061",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0062",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0063",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_cancellation_record",
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0064",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0065",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0066",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0067",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0068",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0069",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_cancellation_record",
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0070",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0071",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0072",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0073",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0074",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0075",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0076",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_shipping_confirmation",
+      "has_tracking_number",
+      "has_delivery_proof"
+    ]
+  },
+  {
+    "dispute_id": "CB-0077",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0078",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_auth_otp_log"
+    ]
+  },
+  {
+    "dispute_id": "CB-0079",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_invoice_match",
+      "has_customer_communication"
+    ]
+  },
+  {
+    "dispute_id": "CB-0080",
+    "bucket": "unwinnable",
+    "ground_truth_defendable": false,
+    "ground_truth_missing_evidence": [
+      "has_cancellation_record",
+      "has_invoice_match"
+    ]
+  },
+  {
+    "dispute_id": "CB-0081",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0082",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0083",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0084",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0085",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0086",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0087",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0088",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0089",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0090",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0091",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0092",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0093",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0094",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0095",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0096",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0097",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0098",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0099",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  },
+  {
+    "dispute_id": "CB-0100",
+    "bucket": "deadline_pressure",
+    "ground_truth_defendable": true,
+    "ground_truth_missing_evidence": []
+  }
+]
