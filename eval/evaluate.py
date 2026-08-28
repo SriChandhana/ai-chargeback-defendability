@@ -114,7 +114,44 @@ def evaluate():
             print(f"  {did} [{bucket}]: {reason}")
         if len(mismatches) > 20:
             print(f"  ... and {len(mismatches) - 20} more")
+    print()
+    print("BY REASON CODE:")
+    by_reason = defaultdict(lambda: {
+        "total": 0, "tp": 0, "fp": 0, "tn": 0, "fn": 0
+    })
 
+    for did, label in labels.items():
+        reason = label["reason_code"]
+        pred = scored[did]["predicted_defendable"]
+        actual = label["ground_truth_defendable"]
+
+        by_reason[reason]["total"] += 1
+
+        if pred and actual:
+            by_reason[reason]["tp"] += 1
+        elif pred and not actual:
+            by_reason[reason]["fp"] += 1
+        elif not pred and actual:
+            by_reason[reason]["fn"] += 1
+        else:
+            by_reason[reason]["tn"] += 1
+
+    for reason, stats in sorted(by_reason.items()):
+        reason_total = stats["total"]
+        reason_accuracy = (
+            (stats["tp"] + stats["tn"]) / reason_total
+            if reason_total else 0
+        )
+
+        print(
+            f"  {reason:28s} "
+            f"total={reason_total:3d} "
+            f"accuracy={reason_accuracy:6.1%} "
+            f"tp={stats['tp']:3d} "
+            f"fp={stats['fp']:3d} "
+            f"tn={stats['tn']:3d} "
+            f"fn={stats['fn']:3d}"
+        )
     print()
     print("=" * 60)
     print("SCORE DISTRIBUTION WITHIN EACH BUCKET (the real nuance)")
