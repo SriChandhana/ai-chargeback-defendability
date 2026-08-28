@@ -11,8 +11,12 @@ Purpose:
     Convert defendability + urgency + evidence gaps into
     a practical merchant priority and recommended action.
 """
-
 from datetime import datetime
+import sys
+from pathlib import Path
+
+BASE = Path(__file__).parent.parent
+sys.path.insert(0, str(BASE))
 
 
 def hours_until_deadline(response_deadline):
