@@ -18,27 +18,24 @@ from pathlib import Path
 BASE = Path(__file__).parent.parent
 sys.path.insert(0, str(BASE))
 
+# The dataset's dates are fixed to August 2026 and don't move with real
+# wall-clock time. Using datetime.now() here would make every dispute
+# "overdue" regardless of the actual case, and the demo's output would
+# silently change depending on what day you happen to run it. Pinning
+# a simulated "now" keeps the demo deterministic and correct against
+# the dataset's actual date range (filed dates span 2026-08-01 to
+# 2026-08-29 per generate_disputes.py).
+SIMULATED_NOW = datetime(2026, 8, 20, 12, 0)
+
 
 def hours_until_deadline(response_deadline):
-    """Return hours remaining until the response deadline."""
+    """Return hours remaining until the response deadline, relative to
+    the simulated demo clock, not real wall-clock time."""
     deadline = datetime.fromisoformat(response_deadline)
-    now = datetime.now()
-    return (deadline - now).total_seconds() / 3600
+    return (deadline - SIMULATED_NOW).total_seconds() / 3600
 
 
 def determine_priority(scored_dispute):
-    """
-    Determine operational priority from:
-      - defendability score
-      - response deadline
-      - missing critical evidence
-
-    Returns:
-      priority
-      recommended_action
-      reason
-    """
-
     score = scored_dispute["score"]
     missing_critical = scored_dispute["missing_critical_evidence"]
 
@@ -46,8 +43,17 @@ def determine_priority(scored_dispute):
         scored_dispute["response_deadline"]
     )
 
-    # 1. High-score cases close to deadline:
-    #    these are the most valuable cases to act on immediately.
+    # Deadline already passed — distinct from "urgent but still actionable".
+    # Without this check, negative hours_left satisfies every "<= 48" test
+    # below and gets misclassified as URGENT alongside genuinely upcoming
+    # deadlines, which is misleading in a demo or real use.
+    if hours_left < 0:
+        return {
+            "priority": "OVERDUE",
+            "recommended_action": "ESCALATE" if score >= 80 or not missing_critical else "CLOSE — DEADLINE PASSED",
+            "reason": "The response deadline has already passed."
+        }
+
     if score >= 80 and hours_left <= 48:
         return {
             "priority": "URGENT",
@@ -55,7 +61,6 @@ def determine_priority(scored_dispute):
             "reason": "High defendability case with a response deadline within 48 hours."
         }
 
-    # 2. High-score cases with more time:
     if score >= 80:
         return {
             "priority": "HIGH",
@@ -63,8 +68,6 @@ def determine_priority(scored_dispute):
             "reason": "Required evidence is present and the case is highly defendable."
         }
 
-    # 3. Missing critical evidence:
-    #    the merchant needs to retrieve evidence before deciding.
     if missing_critical:
         if hours_left <= 48:
             return {
@@ -79,7 +82,6 @@ def determine_priority(scored_dispute):
             "reason": "Critical evidence is missing and should be retrieved before submission."
         }
 
-    # 4. Moderate cases without critical gaps.
     if score >= 50:
         return {
             "priority": "NORMAL",
@@ -87,7 +89,6 @@ def determine_priority(scored_dispute):
             "reason": "The case has moderate defendability and no critical evidence gap."
         }
 
-    # 5. Low-defendability cases.
     return {
         "priority": "LOW",
         "recommended_action": "REVIEW",
@@ -96,35 +97,21 @@ def determine_priority(scored_dispute):
 
 
 def prioritize_all(scored_results):
-    """Add priority information to every scored dispute."""
     results = []
-
     for dispute in scored_results:
         priority = determine_priority(dispute)
-
-        result = {
-            **dispute,
-            **priority,
-        }
-
+        result = {**dispute, **priority}
         results.append(result)
-
     return results
 
 
 def main():
-    # Import here so this file remains a standalone decision layer.
     from scorer.defendability_scorer import score_all
-
     scored_results = score_all()
     results = prioritize_all(scored_results)
-
     for result in results[:10]:
         print("=" * 60)
-        print(
-            f"{result['dispute_id']} | "
-            f"score={result['score']} ({result['score_bucket']})"
-        )
+        print(f"{result['dispute_id']} | score={result['score']} ({result['score_bucket']})")
         print(f"Priority: {result['priority']}")
         print(f"Action:   {result['recommended_action']}")
         print(f"Reason:   {result['reason']}")
